@@ -20,6 +20,24 @@
 
   <title>propdesk</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    /* Match index.html — Google Sign-In web control focus/tap (see index.html) */
+    html, body {
+      -webkit-tap-highlight-color: transparent;
+    }
+    [id^="sign_in_button_"] {
+      overflow: hidden !important;
+      border-radius: 9999px;
+      outline: none !important;
+    }
+    [id^="sign_in_button_"] * {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    [id^="sign_in_button_"] iframe {
+      outline: none !important;
+    }
+  </style>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
