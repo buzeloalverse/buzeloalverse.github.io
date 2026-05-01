@@ -32,13 +32,15 @@
     <title>Propdesk</title>
     <link rel="manifest" href="manifest.json" />
     <style>
-      /* Flutter [HtmlElementView] + Google Identity Services: browser focus rings and
-       tap feedback often draw outside the pill; this keeps them from showing as
-       large arcs on the left/right. */
+      /* Match loader surface so there is no white flash around edges */
       html,
       body {
+        margin: 0;
+        min-height: 100%;
+        background-color: #fafafa;
         -webkit-tap-highlight-color: transparent;
       }
+      /* Flutter [HtmlElementView] + Google Identity Services: focus rings */
       [id^="sign_in_button_"] {
         overflow: hidden !important;
         border-radius: 9999px;
@@ -51,9 +53,45 @@
       [id^="sign_in_button_"] iframe {
         outline: none !important;
       }
+
+      /* Initial load: show branded spinner until Flutter paints first frame */
+      #flutter-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.25rem;
+        background: #fafafa;
+      }
+      #flutter-loading .pd-loader__spinner {
+        width: 44px;
+        height: 44px;
+        border: 3px solid rgba(220, 20, 60, 0.22);
+        border-top-color: #dc143c;
+        border-radius: 50%;
+        animation: pd-loader-spin 0.72s linear infinite;
+      }
+      #flutter-loading .pd-loader__label {
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #6b7280;
+      }
+      @keyframes pd-loader-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
   <body>
+    <div id="flutter-loading" aria-busy="true" aria-live="polite">
+      <div class="pd-loader__spinner" role="progressbar" aria-label="Loading"></div>
+      <span class="pd-loader__label">Loading PropDesk…</span>
+    </div>
     <script src="flutter_bootstrap.js" async></script>
   </body>
 </html>
